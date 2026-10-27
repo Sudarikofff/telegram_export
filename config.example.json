@@ -1,0 +1,14 @@
+{
+  "api_id": "REPLACE_WITH_API_ID",
+  "api_hash": "REPLACE_WITH_API_HASH",
+  "bot_token": "REPLACE_WITH_BOT_TOKEN",
+  "admin_id": 123456789,
+  "proxy": {
+    "enabled": false,
+    "type": "socks5",
+    "host": "127.0.0.1",
+    "port": 1080,
+    "username": "",
+    "password": ""
+  }
+}

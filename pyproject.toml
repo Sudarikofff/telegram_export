@@ -1,0 +1,6 @@
+[tool.ruff]
+target-version = "py39"
+
+[tool.ruff.lint]
+# PEP 604 annotations would raise the runtime minimum to Python 3.10.
+ignore = ["FA100"]

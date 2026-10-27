@@ -1,0 +1,25 @@
+# Configuration and Telegram authorization data
+/config.json
+.env
+.env.*
+!.env.example
+*.session*
+/accounts/
+/bot_session*
+
+# Temporary QR authorization sessions
+/accounts/_qr_temp_*/
+
+# Local Python environments, bytecode, caches, and logs
+/.venv/
+/venv/
+/env/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.py[cod]
+*.log
+logs/
+
+# IDE metadata
+/.idea/
