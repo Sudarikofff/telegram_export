@@ -101,10 +101,13 @@ def ensure_telethon(allow_install: bool = True) -> bool:
         if not allow_install:
             print('Telethon не установлен.')
             return False
+        if sys.prefix == sys.base_prefix:
+            print('Telethon не установлен. Запустите ./install.sh, затем ./run.sh.')
+            return False
         print('Устанавливаю Telethon и cryptg (для максимальной скорости)...')
         try:
             subprocess.run(
-                [sys.executable, '-m', 'pip', 'install', '--user', 'Telethon==1.45.0', 'cryptg'],
+                [sys.executable, '-m', 'pip', 'install', 'Telethon==1.45.0', 'cryptg'],
                 check=True,
             )
             import telethon  # noqa: F401
@@ -115,10 +118,10 @@ def ensure_telethon(allow_install: bool = True) -> bool:
     try:
         import cryptg  # noqa: F401
     except ImportError:
-        if allow_install:
+        if allow_install and sys.prefix != sys.base_prefix:
             try:
                 subprocess.run(
-                    [sys.executable, '-m', 'pip', 'install', '--user', 'cryptg'],
+                    [sys.executable, '-m', 'pip', 'install', 'cryptg'],
                     check=False,
                     stdout=subprocess.DEVNULL,
                     stderr=subprocess.DEVNULL,
