@@ -49,6 +49,7 @@ CHAT_PAGE_SIZE = 8
 ALLOWED_WORKERS = (1, 2, 4, 8)
 WORKERS_DEFAULT = exporter.clamp_workers(exporter.DEFAULT_WORKERS)
 TELEGRAM_UPLOAD_LIMIT = 1950 * 1024 * 1024  # ~1.95 ГБ безопасный лимит отправки
+HOME_KEYBOARD_TEXT = "🏠 Главное меню"
 
 logging.basicConfig(
     level=logging.INFO,
@@ -576,6 +577,11 @@ def home_buttons() -> list:
         [Button.inline("🗂 Файлы и архивы", b"files"), Button.inline(status_label, b"status")],
     ]
 
+
+def home_keyboard() -> list:
+    return [[Button.text(HOME_KEYBOARD_TEXT, resize=True)]]
+
+
 async def show_home(event, edit: bool = False):
     acc_cnt = len(account_names())
     active_cnt = len(ACTIVE_JOBS)
@@ -788,6 +794,10 @@ async def on_start(event):
         return await event.respond("⛔ Доступ запрещён.")
     await safe_disconnect_auth(event.sender_id)
     WIZARDS.pop(event.sender_id, None)
+    await event.respond(
+        "🏠 Кнопка «Главное меню» доступна на клавиатуре внизу.",
+        buttons=home_keyboard(),
+    )
     await show_home(event, edit=False)
 
 
@@ -813,6 +823,11 @@ async def on_text(event):
         return
 
     text = event.raw_text.strip()
+    if text.casefold() in {HOME_KEYBOARD_TEXT.casefold(), "главное меню"}:
+        await safe_disconnect_auth(event.sender_id)
+        WIZARDS.pop(event.sender_id, None)
+        return await show_home(event, edit=False)
+
     auth = AUTH_STATES.get(event.sender_id)
     if auth:
         return await handle_auth_input(event, text, auth)
